@@ -1,0 +1,6 @@
+.photo__like-container {
+    max-width: 22px;
+    max-height: 19px;
+    grid-column: 2;
+    padding: 30px 20px;
+}
