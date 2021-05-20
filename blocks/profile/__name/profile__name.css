@@ -6,10 +6,12 @@
   margin: 0;
   grid-column: 1;
   grid-row: 1;
+  max-width: 294px;
 }
 
 @media screen and (max-width: 670px) {
   .profile__name {
     font-size: 27px;
+    max-width: 294px;
   }
 }

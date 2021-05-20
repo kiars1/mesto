@@ -5,9 +5,3 @@
   font-weight: 400;
   margin: 0;
 }
-
-@media screen and (max-width: 1000px){
-  .footer__title {
-    margin-left: 19px;
-  }
- }

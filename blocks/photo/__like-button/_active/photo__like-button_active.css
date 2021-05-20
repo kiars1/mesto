@@ -1,17 +1,18 @@
 .photo__like-button_active {
+  width: 22px;
+  height: 23px;
   background-image: url(../../../../images/like_active.svg);
-  z-index: 2;
   background-position: center;
   background-repeat: no-repeat;
   background-color: transparent;
+  background-size: 22px 19px;
   border: none;
-  width: 22px;
-  height: 19px;
   cursor: pointer;
-  margin: 0;
   padding: 0;
   opacity: 100%;
   transition: opacity 1s;
+  grid-column: 2;
+  margin: 30px 20px;
 }
 
 .photo__like-button_active:hover {

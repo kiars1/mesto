@@ -6,10 +6,12 @@
   margin: 0;
   grid-column: 1;
   grid-row: 2;
+  max-width: 336px;
 }
 
 @media screen and (max-width: 670px) {
   .profile__description {
     font-size: 14px;
+    max-width: 282px;
   }
 }

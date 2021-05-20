@@ -1,7 +1,13 @@
 .photo {
-  max-width: 100%;
+  max-width: 880px;
   margin: auto;
   padding-top: 47.25px;
+}
+
+@media screen and (max-width: 1000px) {
+  .photo {
+    max-width: 90%;
+  }
 }
 
 @media screen and (max-width: 670px) {
