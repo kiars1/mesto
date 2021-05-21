@@ -13,6 +13,7 @@
   grid-row: 1;
   opacity: 100%;
   transition: opacity 1s;
+  justify-self: end;
 }
 
 @media screen and (max-width: 670px) {
@@ -20,6 +21,7 @@
     width: 18px;
     height: 18px;
     background-size: 7.5px;
+    justify-self: start;
   }
 }
 
