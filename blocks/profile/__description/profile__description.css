@@ -4,14 +4,28 @@
   line-height: normal;
   font-weight: 400;
   margin: 0;
-  grid-column: 1;
+  grid-column: 1/3;
   grid-row: 2;
-  max-width: 336px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 1000px) {
+  .profile__description {
+    font-size: 1.8vw;
+  }
+}
+
+@media screen and (max-width: 780px) {
+  .profile__description {
+    font-size: 14px;
+  }
 }
 
 @media screen and (max-width: 670px) {
   .profile__description {
-    font-size: 14px;
     max-width: 282px;
   }
 }

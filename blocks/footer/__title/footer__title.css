@@ -5,3 +5,10 @@
   font-weight: 400;
   margin: 0;
 }
+
+@media screen and (max-width: 670px){
+  .footer__title {
+     max-width: 90%;
+     font-size: 14px;
+  }
+ }
