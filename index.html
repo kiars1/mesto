@@ -25,46 +25,6 @@
 
 <section class="photo">
   <ul class="photo__list">
-    <li class="photo__container">
-        <img src="images/Karachaevsk.jpg" class="photo__image" alt="Карачаевск">
-        <h2 class="photo__title">Карачаевск</h2>
-        <button class="photo__like-button photo__like-button_active" type="button" aria-label="Лайк"></button>
-    </li>
-    <li class="photo__container">
-      <img src="images/Elbrus.jpg" class="photo__image" alt="Гора Эльбрус">
-      <h2 class="photo__title">Гора Эльбрус</h2>
-    <div class="photo__like-container">
-      <button class="photo__like-button" type="button" aria-label="Лайк"></button>
-    </div>
-    </li>
-    <li class="photo__container">
-      <img src="images/Dombai.jpg" class="photo__image" alt="Домбай">
-      <h2 class="photo__title">Домбай</h2>
-    <div class="photo__like-container">
-      <button class="photo__like-button" type="button" aria-label="Лайк"></button>
-    </div>
-    </li>
-    <li class="photo__container">
-      <img src="images/Elbrus.jpg" class="photo__image" alt="Гора Эльбрус">
-      <h2 class="photo__title">Гора Эльбрус</h2>
-    <div class="photo__like-container">
-      <button class="photo__like-button" type="button" aria-label="Лайк"></button>
-    </div>
-    </li>
-    <li class="photo__container">
-      <img src="images/Dombai.jpg" class="photo__image" alt="Домбай">
-      <h2 class="photo__title">Домбай</h2>
-    <div class="photo__like-container">
-      <button class="photo__like-button" type="button" aria-label="Лайк"></button>
-    </div>
-    </li>
-    <li class="photo__container">
-      <img src="images/Karachaevsk.jpg" class="photo__image" alt="Карачаево-Черкесия">
-      <h2 class="photo__title">Карачаево-Черкесия</h2>
-    <div class="photo__like-container">
-      <button class="photo__like-button" type="button" aria-label="Лайк"></button>
-    </div>
-    </li>
   </ul>
 </section>
 </main>
@@ -73,7 +33,7 @@
   <p class="footer__title">© 2020 Mesto Russia</p>
 </footer>
 
-<div class="popup">
+<div class="popup popup_type_edit">
   <div class="popup__container">
     <button class="popup__button-close" type="button" aria-label="Закрыть"></button>
     <h2 class="popup__title">Редактировать профиль</h2>
@@ -84,6 +44,37 @@
     </form>
   </div>
 </div>
+
+<div class="popup popup_type_new-card">
+  <div class="popup__container">
+    <button class="popup__button-close" type="button" aria-label="Закрыть"></button>
+    <h2 class="popup__title">Новое место</h2>
+    <form class="popup__form" name="editProfile"> 
+      <input type="text" placeholder="Название" class="popup__input" name="TitleProfile" id="TitleInput">
+      <input type="text" placeholder="Ссылка на картинку" class="popup__input" name="PhotoProfile" id="PhotoInput">
+      <button class="popup__button-save" type="submit">Сохранить</button>
+    </form>
+  </div>
+</div>
+
+<div class="popup popup_type_image">
+    <figure class="popup__figure">
+      <button class="popup__button-close" type="button" aria-label="Закрыть"></button>
+      <img src="" alt="" class="popup__image">
+      <figcaption><p class="popup__subtitle"></p></figcaption>
+     </figure>
+</div>
+
+<template class="photo-template">
+  <li class="photo__container">
+    <img src="" class="photo__image" alt="">
+    <h2 class="photo__title"></h2>
+    <button class="photo__like-button" type="button" aria-label="Лайк"></button>
+    <button class="photo__trash-button" type="button" aria-label="Удалить"></button>
+  </li>
+</template>
+
 <script src="./scripts/index.js"></script>
+
 </body>
 </html>
