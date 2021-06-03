@@ -70,9 +70,11 @@ function addCard(card) {
 }
 
 //Функция добавления карточек из масива
-initialCards.reverse().forEach(element => {
+initialCards.reverse().forEach(addInitialCards);
+
+function addInitialCards(element) {
   addCard(createCard(element.name, element.link));
-})
+}
 
 function createCard(title, image){
   const photoElement = photoTemplate.cloneNode(true);
