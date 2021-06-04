@@ -91,8 +91,9 @@ function createCard(title, image){
 
 //Открытие popup с картинкой
 function openPhotoPopup(evt) {
-  popupFigure.src = evt.target.closest('.photo__image').src;
-  popupFigure.alt = evt.target.closest('.photo__image').alt;
+  const cardImage = evt.target.closest('.photo__image');
+  popupFigure.src = cardImage.src;
+  popupFigure.alt = cardImage.alt;
   popupFigcaption.textContent = evt.target.closest('.photo__container').textContent;
   openPopup(popupImage);
 }
