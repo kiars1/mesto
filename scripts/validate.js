@@ -31,7 +31,7 @@ function setSubmitButtonState(form) {
   const button = form.querySelector('.popup__button-save');
   const isValid = form.checkValidity();
 
-  if (isValid){
+  if (isValid) {
     button.classList.remove('popup__button-save_disable');
     button.removeAttribute('disabled');
   } else {

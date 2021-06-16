@@ -55,6 +55,16 @@ function openEditProfilePopup() {
   openPopup(popupEdit);
   nameInput.value = `${profileName.textContent}`;
   jobInput.value = `${profileDescription.textContent}`;
+
+//Да это костыль. Чтобы при повторном открытии (после полного удаления и закрытия через крестик) сразу кнопка была включена
+//и небыло сообщения об ошибке
+  const button = formElementEdit.querySelector('.popup__button-save');
+  button.classList.remove('popup__button-save_disable');
+  button.removeAttribute('disabled');
+  const span = formElementEdit.querySelectorAll('.popup__form-error');
+  span.forEach((item) => {
+    item.textContent = '';
+  })
 }
 
 //Функция открытия popup'а добавления фотокарточки
@@ -63,6 +73,7 @@ function openAddCardPopup() {
   titleInput.value = '';
   photoInput.value = '';
   
+  //Да это костыль. Чтобы при повторном открытии (после удачного добавления) сразу кнопка была отключена.
   const button = formElementNew.querySelector('.popup__button-save');
   button.setAttribute('disabled', 'disabled');
   button.classList.add('popup__button-save_disable');
