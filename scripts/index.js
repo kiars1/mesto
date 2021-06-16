@@ -35,12 +35,20 @@ function closePopup(popup) {
 
 //Закрытия popup нажатием на крестик
 popups.forEach((closeButton) => {
-  closeButton.addEventListener('click', (evt) => {
-    if (evt.target.classList.contains('popup__button-close')) {
+  closeButton.addEventListener('mousedown', (evt) => {
+    if (evt.target.classList.contains('popup__button-close') || (evt.target.classList.contains('popup'))) {
       closePopup(closeButton);
     }
-  })
+  }) 
 })
+
+//Закрытие popup на esc
+popups.forEach((EscButton) => {
+  document.addEventListener('keydown', function (evt) {
+  if (evt.key === "Escape") {
+    closePopup(EscButton);
+  }})
+});
 
 //Функция открытия popup'а редактирования профиля
 function openEditProfilePopup() {
@@ -54,6 +62,10 @@ function openAddCardPopup() {
   openPopup(popupNew);
   titleInput.value = '';
   photoInput.value = '';
+  
+  const button = formElementNew.querySelector('.popup__button-save');
+  button.setAttribute('disabled', 'disabled');
+  button.classList.add('popup__button-save_disable');
 }
 
 //Функция сохранения данных popup'а в профиле пользователя

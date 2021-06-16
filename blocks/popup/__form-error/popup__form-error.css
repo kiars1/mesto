@@ -1,0 +1,30 @@
+.popup__form-error {
+    color: #FF0000;
+    font-size: 12px;
+    line-height: normal;
+    font-weight: 400;
+    margin: 0;
+    width: 358px;
+    position: absolute;
+    top: 225px;
+}
+
+.popup__form-error:nth-child(2) {
+  top: 155px;
+}
+
+@media screen and (max-width: 670px) {
+    .popup__form-error {
+      max-width: 47vw;
+      top: 230px;
+    }
+    .popup__form-error:nth-child(2) {
+      top: 160px;
+    }
+  }
+  
+  @media screen and (max-width: 510px) {
+    .popup__form-error {
+      max-width: 238px;
+    }
+  }
