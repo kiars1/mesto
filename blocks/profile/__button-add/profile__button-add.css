@@ -26,6 +26,12 @@
   }
 }
 
+@media screen and (max-width: 314px) {
+  .profile__button-add {
+    width: 100%;
+  }
+}
+
 .profile__button-add:hover {
   opacity: 60%;
   transition: opacity 1s;

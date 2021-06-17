@@ -38,7 +38,7 @@
     <button class="popup__button-close" type="button" aria-label="Закрыть"></button>
     <h2 class="popup__title">Редактировать профиль</h2>
     <form class="popup__form" name="editProfile" novalidate>
-      <input type="text" placeholder="Имя" class="popup__input" name="nameProfile" id="nameInput" minlength="2" maxlength="40" required>
+      <input type="text" placeholder="Имя" class="popup__input" name="nameProfile" id="nameInput" minlength="2" maxlength="40" pattern="[А-Яа-яA-Za-z -]{1,}" required>
       <span class="popup__form-error" id="nameInput-error"></span>
       <input type="text" placeholder="О себе" class="popup__input" name="jobProfile" id="jobInput" minlength="2" maxlength="200" required>
       <span class="popup__form-error" id="jobInput-error"></span>
@@ -53,9 +53,9 @@
     <h2 class="popup__title">Новое место</h2>
     <form class="popup__form" name="newCard" novalidate>
       <input type="text" placeholder="Название" class="popup__input" name="TitleProfile" id="TitleInput" minlength="2" maxlength="30" required>
-      <span class="popup__form-error" id="TitleInput-error">Заполните это поле.</span>
+      <span class="popup__form-error" id="TitleInput-error"></span>
       <input type="url" placeholder="Ссылка на картинку" class="popup__input" name="PhotoProfile" id="PhotoInput" required>
-      <span class="popup__form-error" id="PhotoInput-error">Введите URL.</span>
+      <span class="popup__form-error" id="PhotoInput-error"></span>
       <button disabled class="popup__button-save popup__button-save_disable" type="submit">Сохранить</button>
     </form>
   </div>

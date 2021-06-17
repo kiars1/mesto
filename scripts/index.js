@@ -26,11 +26,15 @@ const photoTemplate = document.querySelector('.photo-template').content;
 //Функция открытия переданного popup
 function openPopup(popup) {
   popup.classList.add('popup_oppened');
+
+  document.addEventListener('keydown', closePopupKey);
 }
 
 //Функция закрытия переданного popup
 function closePopup(popup) {
   popup.classList.remove('popup_oppened');
+
+  document.removeEventListener('keydown', closePopupKey);
 }
 
 //Закрытия popup нажатием на крестик
@@ -43,24 +47,29 @@ popups.forEach((closeButton) => {
 })
 
 //Закрытие popup на esc
-popups.forEach((EscButton) => {
-  document.addEventListener('keydown', function (evt) {
-  if (evt.key === "Escape") {
-    closePopup(EscButton);
-  }})
-});
+function closePopupKey (evt) {
+  if (evt.key == "Escape") {
+    popups.forEach((EscButton) => {
+      closePopup(EscButton);
+    })
+  }
+}
 
 //Функция открытия popup'а редактирования профиля
 function openEditProfilePopup() {
   openPopup(popupEdit);
-  nameInput.value = `${profileName.textContent}`;
-  jobInput.value = `${profileDescription.textContent}`;
+  nameInput.value = profileName.textContent;
+  jobInput.value = profileDescription.textContent;
 
 //Да это костыль. Чтобы при повторном открытии (после полного удаления и закрытия через крестик) сразу кнопка была включена
-//и небыло сообщения об ошибке
-  const button = formElementEdit.querySelector('.popup__button-save');
-  button.classList.remove('popup__button-save_disable');
-  button.removeAttribute('disabled');
+//и небыло сообщения об ошибке.
+  const buttonElement = popupEdit.querySelector('.popup__button-save');
+  buttonElement.classList.remove('popup__button-save_disable');
+  buttonElement.removeAttribute('disabled');
+
+  nameInput.classList.remove('popup__input_type-error');
+  jobInput.classList.remove('popup__input_type-error');
+
   const span = formElementEdit.querySelectorAll('.popup__form-error');
   span.forEach((item) => {
     item.textContent = '';
@@ -70,13 +79,21 @@ function openEditProfilePopup() {
 //Функция открытия popup'а добавления фотокарточки
 function openAddCardPopup() {
   openPopup(popupNew);
-  titleInput.value = '';
-  photoInput.value = '';
+  formElementNew.reset();
   
-  //Да это костыль. Чтобы при повторном открытии (после удачного добавления) сразу кнопка была отключена.
-  const button = formElementNew.querySelector('.popup__button-save');
-  button.setAttribute('disabled', 'disabled');
-  button.classList.add('popup__button-save_disable');
+  // Да это костыль. Чтобы при повторном открытии (после удачного добавления) сразу кнопка была отключена.
+  //Буду благодарен если дадите намёк как это сделать красиво.
+  const buttonElement = popupNew.querySelector('.popup__button-save');
+  buttonElement.classList.add('popup__button-save_disable');
+  buttonElement.setAttribute('disabled', 'disabled');
+
+  titleInput.classList.remove('popup__input_type-error');
+  photoInput.classList.remove('popup__input_type-error');
+
+  const input = popupNew.querySelectorAll('.popup__form-error');
+  input.forEach((item) => {
+    item.textContent = '';
+  });
 }
 
 //Функция сохранения данных popup'а в профиле пользователя
