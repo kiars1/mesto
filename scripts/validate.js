@@ -28,7 +28,6 @@ const checkinputValidity = (formElement, inputElement, rest) => {
 const setEventListeners = (formElement, rest) => {
   const inputList = Array.from(formElement.querySelectorAll(rest.inputSelector));
   const buttonElement = formElement.querySelector(rest.submitButtonSelector);
-  toggleButtonState(inputList, buttonElement, rest);
 
   inputList.forEach((inputElement) => {
       inputElement.addEventListener('input', () => {
@@ -41,6 +40,7 @@ const setEventListeners = (formElement, rest) => {
 //Включаем карательную машину валидации
 const enableValidation = ({formSelector, ...rest}) => {
   const formList = Array.from(document.querySelectorAll(formSelector));
+
   formList.forEach((formElement) => {
       formElement.addEventListener('submit', (evt) => {
           evt.preventDefault();
@@ -70,12 +70,11 @@ const refreshinputValidity = (formElement, rest) => {
   rest = validationConfig;
   const inputList = Array.from(formElement.querySelectorAll(rest.inputSelector));
   const buttonElement = formElement.querySelector(rest.submitButtonSelector);
-
+  
   inputList.forEach((inputElement) => {
     removeInputError(formElement, inputElement, rest);
+    toggleButtonState(inputList, buttonElement, rest);
   });
-  toggleButtonState(inputList, buttonElement, rest);
 }
-
 
 enableValidation(validationConfig);
