@@ -24,12 +24,11 @@ const checkinputValidity = (formElement, inputElement, rest) => {
   }
 }
 
-//
+//Засылаем шпьёнов и получаем информацию от кротов.
 const setEventListeners = (formElement, rest) => {
   const inputList = Array.from(formElement.querySelectorAll(rest.inputSelector));
   const buttonElement = formElement.querySelector(rest.submitButtonSelector);
   toggleButtonState(inputList, buttonElement, rest);
-
 
   inputList.forEach((inputElement) => {
       inputElement.addEventListener('input', () => {
@@ -50,27 +49,32 @@ const enableValidation = ({formSelector, ...rest}) => {
   })
 }
 
-enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button-save',
-  inactiveButtonClass: 'popup__button-save_disable',
-  inputErrorClass: 'popup__input_type-error',
-  errorClass: 'popup__form-error_active'
-});
-
-//Тут мы берем под потранаж кнопку "Сохранить"
 function hasInvalidInput(inputList) {
   return inputList.some((inputElement) => {
     return !inputElement.validity.valid;
-  })}
+})}
 
-  function toggleButtonState(inputList, buttonElement, rest) {
-    if (hasInvalidInput(inputList)) {
-      buttonElement.classList.add(rest.inactiveButtonClass);
-      buttonElement.setAttribute('disabled', 'disabled');
-    } else {
-      buttonElement.classList.remove(rest.inactiveButtonClass);
-      buttonElement.removeAttribute('disabled');
-    } 
-  }
+//Тут мы берем под потранаж кнопку "Сохранить"
+function toggleButtonState(inputList, buttonElement, rest) {
+  if (hasInvalidInput(inputList)) {
+    buttonElement.classList.add(rest.inactiveButtonClass);
+    buttonElement.setAttribute('disabled', 'disabled');
+  } else {
+    buttonElement.classList.remove(rest.inactiveButtonClass);
+    buttonElement.removeAttribute('disabled');
+  } 
+}
+
+//Сбрасываем валидацию
+const refreshFormValidationState = (formElement, rest = validationConfig) => {
+  const inputList = Array.from(formElement.querySelectorAll(rest.inputSelector));
+  const buttonElement = formElement.querySelector(rest.submitButtonSelector);
+
+  inputList.forEach((inputElement) => {
+    removeInputError(formElement, inputElement, rest);
+  });
+  toggleButtonState(inputList, buttonElement, rest);
+}
+
+
+enableValidation(validationConfig);
