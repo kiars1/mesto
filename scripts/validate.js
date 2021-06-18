@@ -66,8 +66,8 @@ function toggleButtonState(inputList, buttonElement, rest) {
 }
 
 //Сбрасываем валидацию
-const refreshinputValidity = (formElement, rest) => {
-  rest = validationConfig;
+const refreshinputValidity = (formElement) => {
+  const rest = validationConfig;
   const inputList = Array.from(formElement.querySelectorAll(rest.inputSelector));
   const buttonElement = formElement.querySelector(rest.submitButtonSelector);
   
