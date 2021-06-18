@@ -67,14 +67,14 @@ function openEditProfilePopup() {
   openPopup(popupEdit);
   nameInput.value = profileName.textContent;
   jobInput.value = profileDescription.textContent;
-  refreshFormValidationState(popupEdit);
+  refreshinputValidity(popupEdit);
 }
 
 //Функция открытия popup'а добавления фотокарточки
 function openAddCardPopup() {
   openPopup(popupNew);
   formElementNew.reset();
-  refreshFormValidationState(popupNew);
+  refreshinputValidity(popupNew);
 }
 
 //Функция сохранения данных popup'а в профиле пользователя
