@@ -1,4 +1,4 @@
-import {openPopup} from './index.js';
+import {openPopup, popupImage, popupFigure, popupFigcaption} from './index.js';
 
 export class Card {
   constructor(name, link, cardSelector) {
@@ -29,16 +29,9 @@ export class Card {
 
   //Вызываем картинку на допрос
   _openPhotoPopup() {
-    const cardImage = this._element.querySelector('.photo__image');
-    const cardName = this._element.querySelector('.photo__title');
-    
-    const popupImage = document.querySelector('.popup_type_image');
-    const popupFigure = popupImage.querySelector('.popup__image');
-    const popupFigcaption = popupImage.querySelector('.popup__subtitle');
-
-    popupFigure.src = cardImage.src;
-    popupFigure.alt = cardImage.alt;
-    popupFigcaption.textContent = cardName.textContent;
+    popupFigure.src = this._link;
+    popupFigure.alt = this._name;
+    popupFigcaption.textContent = this._name;
     openPopup(popupImage);
   }
 
@@ -65,7 +58,7 @@ export class Card {
     const cardName = this._element.querySelector('.photo__title');
 
     cardName.textContent = this._name;
-    cardName.alt = this._name;
+    cardImage.alt = this._name;
     cardImage.src = this._link;
 
     return this._element;

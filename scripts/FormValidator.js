@@ -1,6 +1,6 @@
 export class FormValidator {
-  constructor(validationConfig, FormElement) {
-    this._FormElement = FormElement;
+  constructor(validationConfig, formElement) {
+    this._formElement = formElement;
     this._formSelector = validationConfig.formSelector;
     this._inputSelector = validationConfig.inputSelector;
     this._submitButtonSelector = validationConfig.submitButtonSelector;
@@ -11,7 +11,7 @@ export class FormValidator {
 
   //Активирует Алярм!
   _addInputError(inputElement, errorMessage) {
-    const errorElement =  this._FormElement.querySelector(`#${inputElement.id}-error`);
+    const errorElement =  this._formElement.querySelector(`#${inputElement.id}-error`);
     inputElement.classList.add(this._inputErrorClass);
     errorElement.classList.add(this._errorClass);
     errorElement.textContent = errorMessage;
@@ -19,7 +19,7 @@ export class FormValidator {
   
   //Деактивирует Алярм!
   _removeInputError(inputElement) {
-  const errorElement =  this._FormElement.querySelector(`#${inputElement.id}-error`);
+  const errorElement =  this._formElement.querySelector(`#${inputElement.id}-error`);
     inputElement.classList.remove(this._inputErrorClass);
     errorElement.classList.remove(this._errorClass);
     errorElement.textContent = '';
@@ -36,8 +36,8 @@ export class FormValidator {
 
   //Засылаем шпьёнов и получаем информацию от кротов.
   _setEventListeners() {
-    const inputList = Array.from(this._FormElement.querySelectorAll(this._inputSelector));
-    const buttonElement = this._FormElement.querySelector(this._submitButtonSelector);
+    const inputList = Array.from(this._formElement.querySelectorAll(this._inputSelector));
+    const buttonElement = this._formElement.querySelector(this._submitButtonSelector);
       
     inputList.forEach((inputElement) => {
       inputElement.addEventListener('input', () => {
@@ -65,19 +65,20 @@ export class FormValidator {
   }
 
   //Сбрасываем Валидацию  
-  refreshinputValidity() {
-    const inputList = Array.from(this._FormElement.querySelectorAll(this._inputSelector));
-    const buttonElement = this._FormElement.querySelector(this._submitButtonSelector);
-        
+  refreshInputValidity() {
+    const inputList = Array.from(this._formElement.querySelectorAll(this._inputSelector));
+    const buttonElement = this._formElement.querySelector(this._submitButtonSelector);
+    
+    this._toggleButtonState(inputList, buttonElement);
+
     inputList.forEach((inputElement) => {
       this._removeInputError(inputElement)
-      this._toggleButtonState(inputList, buttonElement);
     });
   }
 
   //Включаем карательную машину валидации
   enableValidation() {
-    this._FormElement.addEventListener('submit', (evt) => {
+    this._formElement.addEventListener('submit', (evt) => {
       evt.preventDefault();
     })
     this._setEventListeners();
