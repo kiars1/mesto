@@ -40,12 +40,17 @@ const cardFormValidator = new FormValidator(validationConfig, formElementNew);
 editFormValidator.enableValidation();
 cardFormValidator.enableValidation();
 
- // Добавляем карточки
-initialCards.forEach((item) => {
-  const card = new Card(item.name, item.link, '.photo-template');
+//Функция добавлния карточки
+const createCard = (name, link, cardSelector) => {
+  const card = new Card(name, link, cardSelector);
   const cardElement = card.generateCard()
   
-  photoList.append(cardElement);
+  photoList.prepend(cardElement);
+}
+
+ // Добавляем заготовленные карточки
+initialCards.reverse().forEach((item) => {
+  createCard(item.name, item.link, '.photo-template');
 });
 
 //Функция открытия переданного popup
@@ -105,10 +110,7 @@ function formSubmitHandlerEdit (evt) {
 //Добовление новой карточки через popup
 function formAddCardSubmitHandler(evt) {
   evt.preventDefault();
-  const card = new Card(titleInput.value, photoInput.value, '.photo-template'); 
-  const cardElement = card.generateCard(); 
-
-  photoList.prepend(cardElement);
+  createCard(titleInput.value, photoInput.value, '.photo-template');
   closePopup(popupNew); 
 }
 
