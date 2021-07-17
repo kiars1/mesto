@@ -1,10 +1,9 @@
-import {openPopup, popupImage, popupFigure, popupFigcaption} from './index.js';
-
 export class Card {
-  constructor(name, link, cardSelector) {
+  constructor(name, link, cardSelector, handleCardClick) {
     this._name = name;
     this._link = link;
     this._cardSelector = cardSelector;
+    this._handleCardClick = handleCardClick;
   }
   
   //Читаем template
@@ -17,25 +16,17 @@ export class Card {
     return cardElement;
   }
   
-  //Репресируем Карточку
+  //Добавляем/удаления ЛОЙСА
   _likePhoto() {
     this._element.querySelector('.photo__like-button').classList.toggle('photo__like-button_active');
   }
   
-  //Добавляем/удаления ЛОЙСА
+  //Удаляем Карточку
   _deletePhoto() {
-    this._element.querySelector('.photo__trash-button').closest('.photo__container').remove();
+    this._element.remove();
   }
 
-  //Вызываем картинку на допрос
-  _openPhotoPopup() {
-    popupFigure.src = this._link;
-    popupFigure.alt = this._name;
-    popupFigcaption.textContent = this._name;
-    openPopup(popupImage);
-  }
-
-  //Соседи из соседней кухни которые позвонят в НКВД.
+  //Добавляем слушателей
   _setEventListeners() {
     this._element.querySelector('.photo__like-button').addEventListener('click', () => {
       this._likePhoto();
@@ -46,7 +37,7 @@ export class Card {
     });
 
     this._element.querySelector('.photo__image').addEventListener('click', () => {
-      this._openPhotoPopup();
+      this._handleCardClick();
     });
   }
 

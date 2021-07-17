@@ -3,18 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./pages/index.css">
   <title>Проэкт Место</title>
 </head>
 
 <body class="root">
 <header class="header">
-  <img src="./images/logo.svg" class="header__logo" alt="Проект 'Место'">
+  <img src="<%=require('./images/logo.svg')%>" class="header__logo" alt="Проект 'Место'">
 </header>
 
 <main class="main">
 <section class="profile">
-  <img class="profile__image" src="images/Zhak-Iv_Kusto.jpg" alt="Аватар профиля">
+  <img class="profile__image" src="<%=require('./images/Zhak-Iv_Kusto.jpg')%>" alt="Аватар профиля">
   <div class="profile__info">
     <h1 class="profile__name">Жак-Ив Кусто</h1>
     <p class="profile__description">Исследователь океана</p>
@@ -66,7 +65,7 @@
       <button class="popup__button-close" type="button" aria-label="Закрыть"></button>
       <img src="#" alt="#" class="popup__image">
       <figcaption><p class="popup__subtitle"></p></figcaption>
-     </figure>
+    </figure>
 </div>
 
 <template class="photo-template">
@@ -78,6 +77,5 @@
   </li>
 </template>
 
-<script type="module" src="./scripts/index.js"></script>
 </body>
 </html>
