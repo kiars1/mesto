@@ -24,6 +24,7 @@ export class Card {
   //Удаляем Карточку
   _deletePhoto() {
     this._element.remove();
+    this._element = null;
   }
 
   //Добавляем слушателей

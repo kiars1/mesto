@@ -14,8 +14,8 @@ export class UserInfo {
   }
 
   //Кушаем инпуты
-  setUserInfo() {
-    this._name.textContent = nameInput.value;
-    this._info.textContent = jobInput.value;
+  setUserInfo(name, job) {
+    this._name.textContent = name;
+    this._info.textContent = job;
   }
 }

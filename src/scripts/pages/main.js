@@ -71,8 +71,12 @@ const addCardPopup = new PopupWithForm ({
 //Функция редактирования профиля пользователя
 const editProfilePopup = new PopupWithForm ({
   popupElement: popupEdit,
-  submitCallback: () => {
-      user.setUserInfo(editProfilePopup._getInputValues());
+  submitCallback: (data) => {
+    const name = data.nameProfile;
+    const job = data.jobProfile;
+
+      user.setUserInfo(name, job);
+      
       editProfilePopup.close();
   } 
 });

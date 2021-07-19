@@ -1,6 +1,7 @@
 export class Popup {
   constructor (popupElement) {
     this._popupElement = popupElement;
+    this._handleEscClose = this._handleEscClose.bind(this);
   }
 
   //открытие popup
@@ -15,10 +16,7 @@ export class Popup {
   //Зыкрытие popup
   close() {
     this._popupElement.classList.remove('popup_opened');
-
-    document.removeEventListener('keydown', (evt) => {
-        this._handleEscClose(evt);
-    });
+    document.removeEventListener('keydown', this._handleEscClose);
   }
 
   //Закрытие popup на Esc
