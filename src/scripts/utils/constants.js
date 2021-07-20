@@ -24,3 +24,5 @@ export const validationConfig = {
   inputErrorClass: 'popup__input_type-error',
   errorClass: 'popup__form-error_active'
 };
+
+export const keyClose = 'Escape';
