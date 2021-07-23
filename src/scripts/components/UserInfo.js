@@ -1,7 +1,8 @@
 export class UserInfo {
-  constructor(name, info) {
+  constructor(name, info, avatar) {
     this._name = name;
     this._info = info;
+    this._avatar = avatar;
   }
 
   //Забиваем форму нужным значением
@@ -17,5 +18,10 @@ export class UserInfo {
   setUserInfo(name, job) {
     this._name.textContent = name;
     this._info.textContent = job;
+    
+  }
+
+  setUserAvatar(avatar) {
+    this._avatar.src = avatar;
   }
 }

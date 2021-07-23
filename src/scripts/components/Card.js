@@ -1,9 +1,10 @@
 export class Card {
-  constructor(name, link, cardSelector, handleCardClick) {
+  constructor(name, link, cardSelector, handleCardClick, handleDelete) {
     this._name = name;
     this._link = link;
     this._cardSelector = cardSelector;
     this._handleCardClick = handleCardClick;
+    this._handleDelete = handleDelete;
   }
   
   //Читаем template
@@ -22,7 +23,7 @@ export class Card {
   }
   
   //Удаляем Карточку
-  _deletePhoto() {
+  deletePhoto() {
     this._element.remove();
     this._element = null;
   }
@@ -33,12 +34,12 @@ export class Card {
       this._likePhoto();
     });
 
-    this._element.querySelector('.photo__trash-button').addEventListener('click', () => {
-      this._deletePhoto();
-    });
-
     this._element.querySelector('.photo__image').addEventListener('click', () => {
       this._handleCardClick();
+    });
+
+    this._element.querySelector('.photo__trash-button').addEventListener('click', () => {
+      this._handleDelete(this);
     });
   }
 

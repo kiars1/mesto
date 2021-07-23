@@ -13,7 +13,8 @@
 
 <main class="main">
 <section class="profile">
-  <img class="profile__image" src="<%=require('./images/Zhak-Iv_Kusto.jpg')%>" alt="Аватар профиля">
+    <img class="profile__image" src="<%=require('./images/Zhak-Iv_Kusto.jpg')%>" alt="Аватар профиля">
+    <button class="profile__button-edit-photo" type="button" aria-label="Редактировать"></button>
   <div class="profile__info">
     <h1 class="profile__name">Жак-Ив Кусто</h1>
     <p class="profile__description">Исследователь океана</p>
@@ -68,11 +69,36 @@
     </figure>
 </div>
 
+<div class="popup popup_type_delete">
+  <div class="popup__container">
+    <button class="popup__button-close" type="button" aria-label="Закрыть"></button>
+    <form class="popup__form" name="Confirm" novalidate>
+      <h2 class="popup__title">Вы уверены?</h2>
+      <button class="popup__button-save" type="submit">Да</button>
+    </form>
+  </div>
+</div>
+
+<div class="popup popup_type_avatar">
+  <div class="popup__container">
+    <button class="popup__button-close" type="button" aria-label="Закрыть"></button>
+    <h2 class="popup__title">Обновить аватар</h2>
+    <form class="popup__form" name="newAvatar" novalidate>
+      <input type="url" placeholder="Ссылка на картинку" class="popup__input" name="AvatarProfile" id="AvatarInput" required>
+      <span class="popup__form-error" id="AvatarInput-error"></span>
+      <button disabled class="popup__button-save popup__button-save_disable" type="submit">Сохранить</button>
+    </form>
+  </div>
+</div>
+
 <template class="photo-template">
   <li class="photo__container">
     <img src="#" class="photo__image" alt="#">
     <h2 class="photo__title"></h2>
-    <button class="photo__like-button" type="button" aria-label="Лайк"></button>
+    <div class="photo__like">
+      <button class="photo__like-button" type="button" aria-label="Лайк"></button>
+      <span class="photo__score">0</span>
+    </div>
     <button class="photo__trash-button" type="button" aria-label="Удалить"></button>
   </li>
 </template>

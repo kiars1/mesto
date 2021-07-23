@@ -11,8 +11,6 @@
   padding: 0;
   opacity: 100%;
   transition: opacity 1s;
-  grid-column: 2;
-  margin: 30px 20px;
 }
 
 .photo__like-button_active:hover {

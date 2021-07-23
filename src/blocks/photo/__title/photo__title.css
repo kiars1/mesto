@@ -1,12 +1,12 @@
 .photo__title {
-    color: #000;
-    font-size: 24px;
-    font-weight: 900;
-    margin: 0;
-    max-width: 200px;
-    grid-column: 1;
-    padding: 25px 0px 31px 21px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+  color: #000;
+  font-size: 24px;
+  font-weight: 900;
+  margin: 0;
+  max-width: 200px;
+  grid-column: 1;
+  padding: 25px 0px 31px 21px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
