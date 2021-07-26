@@ -7,7 +7,6 @@ import { Section } from '../components/Section.js';
 import { UserInfo } from '../components/UserInfo.js';
 import { FormValidator } from "../components/FormValidator.js";
 
-import { initialCards } from "../utils/initial-сards.js";
 import { 
   profileImage,
   profileName,
@@ -32,31 +31,13 @@ import {
 
 import "../../pages/index.css";
 
-//Тест для понимания что там внутри
- const ES = fetch(`https://mesto.nomoreparties.co/v1/cohort-26/cards`, {
-    headers: {
-      authorization: '1dde9be2-497c-4a76-871d-3a40c54053fd',
-      'Content-Type': 'application/json'
+const api = new Api({
+  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-26/',
+  headers: {
+    authorization: '1dde9be2-497c-4a76-871d-3a40c54053fd',
+    'Content-Type': 'application/json'
   }
-  })
-  .then((res) => {
-    return res.json();
-  })
-  .then((data) => {
-    
-    data.map((card) => {
-
-    });
-})
-
-
-// const Api = new Api({
-//   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-26/',
-//   headers: {
-//     authorization: '1dde9be2-497c-4a76-871d-3a40c54053fd',
-//     'Content-Type': 'application/json'
-//   }
-// });
+});
 
 const avatarFormValidator = new FormValidator(validationConfig, formElementAvatar);
 const editFormValidator = new FormValidator(validationConfig, formElementEdit);
@@ -69,11 +50,23 @@ avatarFormValidator.enableValidation()
 editFormValidator.enableValidation();
 cardFormValidator.enableValidation();
 
+//Получаем данные пользователя
+api.getUserInfo()
+.then((res) => {
+  const name = res.name;
+  const about = res.about;
+  const avatar = res.avatar;
+
+  user.setUserInfo(name, about);
+  user.setUserAvatar(avatar);
+})
+
+
 //Функция создания карточки
-const createCard = (name, link) => {
-  const card = new Card (name, link, '.photo-template', () => {
+const createCard = (name, link, id, likes) => {
+  const card = new Card (name, link, id, likes, '.photo-template', () => {
       photoCardPopup.open({name: name, link: link});
-  }, (card) => {
+  }, () => {
   deleteConfirm.open(card);
 });
 
@@ -81,26 +74,34 @@ const createCard = (name, link) => {
   return photo;
 };
 
- //Функция подтверждения удаления
- const deleteConfirm = new PopupWithSubmit (popupDelete, 
-  (card) => {
-  card.deletePhoto();
-  deleteConfirm.close();
-  }, keyClose)
+let cardsArray = [];
+let cardList = null;
 
-deleteConfirm.setEventListeners();
+//Получаем карточки
+api.getInitialCards()
+.then((res) => {
+  cardsArray = res.map((item) => {
+      return item;
+  })
+  return cardsArray
+})
 
 //Функция добавления карточек на страницу
-const cardList = new Section ({
-  items: initialCards,
+.then(() => {
+cardList = new Section ({
+  items: cardsArray,
   renderer: (item) => {
       const name = item.name;
       const link = item.link;
-      cardList.addItem(createCard(name, link))
+      const id = item._id;
+      const likes = item.likes.length
+      cardList.addItem(createCard(name, link, id, likes))
   }
 }, photoList);
 
 cardList.render();
+
+})
 
 //Добавление НОВОЙ карточки на страницу
 const addCardPopup = new PopupWithForm ({
@@ -109,12 +110,12 @@ const addCardPopup = new PopupWithForm ({
     const name = item.TitleProfile;
     const link = item.PhotoProfile;
 
-    cardList.addItem(createCard(name ,link));
+    api.pushCards({name, link});
+    cardList.addItem(createCard(name ,link)); // менять 
 
     addCardPopup.close();
   }
 }, keyClose);
-
 
 //Функция редактирования профиля пользователя
 const editProfilePopup = new PopupWithForm ({
@@ -123,7 +124,8 @@ const editProfilePopup = new PopupWithForm ({
     const name = data.nameProfile;
     const job = data.jobProfile;
 
-      user.setUserInfo(name, job);
+      api.pushUserInfo({name, job})
+      user.setUserInfo(name, job); // менять 
       
       editProfilePopup.close();
   }
@@ -132,15 +134,25 @@ const editProfilePopup = new PopupWithForm ({
 //Функция редактирования АВАТАРА пользователя
 const editAvatarPopup = new PopupWithForm ({
   popupElement: popupAvatar,
-  submitCallback: (item) => {
-    const avatar = item.AvatarProfile;
+  submitCallback: (data) => {
+    const avatar = data.AvatarProfile;
+
+    api.pushUserAvatar({avatar});
     user.setUserAvatar(avatar);
       
       editAvatarPopup.close();
   } 
 }, keyClose);
 
+//Функция подтверждения удаления
+const deleteConfirm = new PopupWithSubmit (popupDelete, 
+  (card) => {
+  const id = card._id
 
+  api.deleteCards(id)
+  card.deletePhoto();// менять 
+  deleteConfirm.close();
+  }, keyClose)
 
 //Открытие и сбрасывание валидации AVATAR
 buttonAvatar.addEventListener('click', () => {
@@ -168,3 +180,4 @@ editAvatarPopup.setEventListeners();
 addCardPopup.setEventListeners();
 photoCardPopup.setEventListeners();
 editProfilePopup.setEventListeners();
+deleteConfirm.setEventListeners();
