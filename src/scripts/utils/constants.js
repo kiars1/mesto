@@ -14,6 +14,9 @@ export const popupDelete = document.querySelector('.popup_type_delete');
 export const formElementAvatar = popupAvatar.querySelector('.popup__form');
 export const formElementEdit = popupEdit.querySelector('.popup__form');
 export const formElementNew = popupNew.querySelector('.popup__form');
+export const buttonSaveNew = popupNew.querySelector('.popup__button-save');
+export const buttonSaveDel = popupDelete.querySelector('.popup__button-save');
+
 
 export const popupImage = document.querySelector('.popup_type_image');
 

@@ -21,6 +21,8 @@ import {
   formElementAvatar,
   formElementEdit,
   formElementNew,
+  buttonSaveNew,
+  buttonSaveDel,
   popupImage,
   nameInput,
   jobInput,
@@ -56,19 +58,9 @@ cardFormValidator.enableValidation();
 //но сейчас он такой какой он есть.
 let UserId = null;
 
-//Функция подтверждения удаления
-const deleteConfirm = new PopupWithSubmit (popupDelete, 
-  (card) => {
-  api.deleteCards(card._id)
-    .then(() => {
-      card.deletePhoto();
-      deleteConfirm.close();
-    })
-  }, keyClose)
-
 //Функция отображения загрузки
-function loading(Loading) {
-  if (Loading) {
+function loading(loading) {
+  if (loading) {
     Array.from(saveButton).forEach((submit) => {
       submit.classList.add('popup__button-save_active') //Просто css с простой анимацией. Люблю я это дело.
       submit.textContent = "Сохранение...";
@@ -86,6 +78,7 @@ const createCard = (data, UserId, cardList) => {
   const card = new Card (data, '.photo-template', api, () => {
     photoCardPopup.open(data);
   }, () => {
+  buttonSaveDel.textContent = "Да"; //Да это костыль
   deleteConfirm.open(card);
 }, UserId);
   const photo = card.generateCard();
@@ -99,23 +92,25 @@ const cardList = new Section ({
   }
 }, photoList);
 
-//Добавление НОВОЙ карточки на страницу
-const addCardPopup = new PopupWithForm ({
-  popupElement: popupNew,
-  submitCallback: (item) => {
+//Функция редактирования АВАТАРА пользователя
+const editAvatarPopup = new PopupWithForm ({
+  popupElement: popupAvatar,
+  submitCallback: (data) => {
     loading(true);
-    const name = item.TitleProfile;
-    const link = item.PhotoProfile;
+    const avatar = data.AvatarProfile;
 
-    api.pushCards({name, link})
+    api.pushUserAvatar({avatar})
       .then((data) => {
-      createCard(data, UserId, cardList);
-      addCardPopup.close();
-    })
-    .finally(() => {
-      loading(false);
+      user.setUserAvatar(data.avatar);
+      editAvatarPopup.close();
+      })
+      .catch(() => {
+        alert('Невозможно обновить аватар пользователя.'); //Потому что ошубку надо видеть
+      })
+      .finally(() => {
+        loading(false);
   })
-  }
+  } 
 }, keyClose);
 
 //Функция редактирования профиля пользователя
@@ -133,29 +128,49 @@ const editProfilePopup = new PopupWithForm ({
       user.setUserInfo(name, job);
       editProfilePopup.close();
     })
+    .catch(() => {
+      alert('Невозможно обновить данные пользователя.'); //Потому что ошубку надо видеть
+    })
     .finally(() => {
       loading(false);
     })
   }
 }, keyClose);
 
-//Функция редактирования АВАТАРА пользователя
-const editAvatarPopup = new PopupWithForm ({
-  popupElement: popupAvatar,
-  submitCallback: (data) => {
+//Добавление НОВОЙ карточки на страницу
+const addCardPopup = new PopupWithForm ({
+  popupElement: popupNew,
+  submitCallback: (item) => {
     loading(true);
-    const avatar = data.AvatarProfile;
+    const name = item.TitleProfile;
+    const link = item.PhotoProfile;
 
-    api.pushUserAvatar({avatar})
+    api.pushCards({name, link})
       .then((data) => {
-      user.setUserAvatar(data.avatar);
-      editAvatarPopup.close();
-    })
-    .finally(() => {
-      loading(false);
-  })
-  } 
+        createCard(data, UserId, cardList);
+        addCardPopup.close();
+      })
+      .catch(() => {
+        alert('Невозможно добавить новую карточку.'); //Потому что ошубку надо видеть
+      })
+  }
 }, keyClose);
+
+//Функция подтверждения удаления
+const deleteConfirm = new PopupWithSubmit (popupDelete, 
+  (card) => {
+  loading(true);
+  api.deleteCards(card._id)
+    .then((res) => {
+      if (res.message == "Пост удалён") {  //Да да это тоже костыль, чтобы сделать хоть какуюто проверку ответа сервера.
+      card.deletePhoto();
+      deleteConfirm.close();
+      }
+    })
+    .catch(() => {
+      alert('Невозможно удалить карточку.'); //Потому что ошубку надо видеть
+    })
+  }, keyClose)
 
 //Открытие и сбрасывание валидации AVATAR
 buttonAvatar.addEventListener('click', () => {
@@ -165,7 +180,6 @@ buttonAvatar.addEventListener('click', () => {
 
 //Открытие/заполнение и сбрасывание валидации Edit Popup
 buttonEdit.addEventListener('click', () => {
-  
   editProfilePopup.open()
   nameInput.value = user.getUserInfo().name;
   jobInput.value = user.getUserInfo().job;
@@ -174,11 +188,12 @@ buttonEdit.addEventListener('click', () => {
 
 //Открытие и сбрасывание валидации New Popup
 buttonAdd.addEventListener('click', () => {
+  buttonSaveNew.textContent = "Создать"; // да это костылёк
   addCardPopup.open();
   cardFormValidator.refreshInputValidity();
 });
 
-// включение слушателей попапов
+//Включение слушателей попапов
 editAvatarPopup.setEventListeners();
 addCardPopup.setEventListeners();
 photoCardPopup.setEventListeners();
@@ -189,13 +204,13 @@ deleteConfirm.setEventListeners();
 //А этот друг жрёт как не в себя. Мы не будем его за это осуждать
 //Ведь он ещё и отправляет письма на сервер.
 Promise.all([api.getInitialCards(), api.getUserInfo()])
-    .then(([cards, userData]) => {
-        const name = userData.name
-        const job = userData.about
-        const avatar = userData.avatar
-        user.setUserInfo(name, job);
-        user.setUserAvatar(avatar);
-        UserId = userData._id; //А это уже позрослевший друг.
+  .then(([cards, userData]) => {
+    const name = userData.name
+    const job = userData.about
+    const avatar = userData.avatar
+    user.setUserInfo(name, job);
+    user.setUserAvatar(avatar);
+    UserId = userData._id; //А это уже позрослевший друг.
 
-        cardList.render(cards);
-    })
+    cardList.render(cards);
+  })

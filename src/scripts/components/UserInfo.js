@@ -20,6 +20,7 @@ export class UserInfo {
     this._info.textContent = job;
   }
 
+  //Кушаем инпут аватара
   setUserAvatar(avatar) {
     this._avatar.src = avatar;
   }
