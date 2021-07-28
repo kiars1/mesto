@@ -160,9 +160,11 @@ const addCardPopup = new PopupWithForm ({
 const deleteConfirm = new PopupWithSubmit (popupDelete, 
   (card) => {
   loading(true);
-  api.deleteCards(card._id)
+  const id = card._id
+  
+  api.deleteCards(id)
     .then((res) => {
-      if (res.message == "Пост удалён") {  //Да да это тоже костыль, чтобы сделать хоть какуюто проверку ответа сервера.
+      if (res.ok) {  //Да да это тоже костыль, чтобы сделать хоть какуюто проверку ответа сервера. Чегото тут я уже спёкся.
       card.deletePhoto();
       deleteConfirm.close();
       }
