@@ -10,7 +10,7 @@ export class Api {
     } return Promise.reject(`Ошибка: ${res.status}`);
   }
 
-//Получаем профиль пользователя
+  //Получаем профиль пользователя
   getUserInfo() {
     return fetch(`${this._baseUrl}users/me`, {
       method: 'GET',
@@ -38,7 +38,7 @@ export class Api {
       })
   }
 
-//Отправляем Аватар
+  //Отправляем Аватар
   pushUserAvatar(link) {
     return fetch(`${this._baseUrl}users/me/avatar`, {
       method: 'PATCH',
@@ -103,7 +103,7 @@ export class Api {
   })
   }
 
-   //Удаляем лайк
+  //Удаляем лайк
   deleteLike(id) {
     return fetch(`${this._baseUrl}cards/likes/${id}`, {
       method: 'DELETE',

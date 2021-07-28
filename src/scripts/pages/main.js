@@ -51,6 +51,9 @@ avatarFormValidator.enableValidation()
 editFormValidator.enableValidation();
 cardFormValidator.enableValidation();
 
+//Это мой боевой друг. Отличная заглушка, чтобы не компосировать мозги.
+//Он потом станет немного другим, как и все мы с возростом,
+//но сейчас он такой какой он есть.
 let UserId = null;
 
 //Функция подтверждения удаления
@@ -63,10 +66,11 @@ const deleteConfirm = new PopupWithSubmit (popupDelete,
     })
   }, keyClose)
 
+//Функция отображения загрузки
 function loading(Loading) {
   if (Loading) {
     Array.from(saveButton).forEach((submit) => {
-      submit.classList.add('popup__button-save_active')
+      submit.classList.add('popup__button-save_active') //Просто css с простой анимацией. Люблю я это дело.
       submit.textContent = "Сохранение...";
     })
   } else {
@@ -84,7 +88,6 @@ const createCard = (data, UserId, cardList) => {
   }, () => {
   deleteConfirm.open(card);
 }, UserId);
-  // card.likePhoto(data);
   const photo = card.generateCard();
   cardList.addItem(photo)
 };
@@ -123,15 +126,15 @@ const editProfilePopup = new PopupWithForm ({
     const name = data.nameProfile;
     const job = data.jobProfile;
 
-      api.pushUserInfo({name, job})
-      .then((data) => {
-        const name = data.name
-        const job = data.about
-        user.setUserInfo(name, job);
-        editProfilePopup.close();
-      })
-      .finally(() => {
-        loading(false);
+    api.pushUserInfo({name, job})
+    .then((data) => {
+      const name = data.name
+      const job = data.about
+      user.setUserInfo(name, job);
+      editProfilePopup.close();
+    })
+    .finally(() => {
+      loading(false);
     })
   }
 }, keyClose);
@@ -182,6 +185,9 @@ photoCardPopup.setEventListeners();
 editProfilePopup.setEventListeners();
 deleteConfirm.setEventListeners();
 
+
+//А этот друг жрёт как не в себя. Мы не будем его за это осуждать
+//Ведь он ещё и отправляет письма на сервер.
 Promise.all([api.getInitialCards(), api.getUserInfo()])
     .then(([cards, userData]) => {
         const name = userData.name
@@ -189,7 +195,7 @@ Promise.all([api.getInitialCards(), api.getUserInfo()])
         const avatar = userData.avatar
         user.setUserInfo(name, job);
         user.setUserAvatar(avatar);
-        UserId = userData._id;
+        UserId = userData._id; //А это уже позрослевший друг.
 
         cardList.render(cards);
     })
