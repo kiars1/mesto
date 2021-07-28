@@ -22,6 +22,8 @@ export const jobInput = document.querySelector('#jobInput');
 
 export const photoList = document.querySelector('.photo__list');
 
+export const saveButton = document.querySelectorAll('.popup__button-save');
+
 export const validationConfig = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',

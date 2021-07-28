@@ -1,0 +1,44 @@
+.popup__button-save_active {
+  color: #fff;
+  background-color: #000;
+  border: none;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  width: 358px;
+  height: 50px;
+  border-radius: 2px;
+  margin-top: 18px;
+  padding: 0;
+  animation: glow 2s infinite ease-in-out;
+  }
+  
+  @keyframes glow {
+    0% {
+      opacity: 0.5;
+    }
+    33% {
+      opacity: 1;
+    }
+    66% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.5;
+    }
+  }
+
+  @media screen and (max-width: 670px) {
+    .popup__button-save_active {
+      margin-top: 15px;
+      max-width: 47vw;
+      font-size: 14px;
+      height: 46px;
+    }
+  }
+  
+  @media screen and (max-width: 510px) {
+    .popup__button-save_active {
+      max-width: 238px;
+    }
+  }

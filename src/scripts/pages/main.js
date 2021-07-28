@@ -26,6 +26,7 @@ import {
   jobInput,
   photoList,
   validationConfig,
+  saveButton,
   keyClose
 } from "../utils/constants.js";
 
@@ -50,70 +51,67 @@ avatarFormValidator.enableValidation()
 editFormValidator.enableValidation();
 cardFormValidator.enableValidation();
 
-//Получаем данные пользователя
-api.getUserInfo()
-.then((res) => {
-  const name = res.name;
-  const about = res.about;
-  const avatar = res.avatar;
+let UserId = null;
 
-  user.setUserInfo(name, about);
-  user.setUserAvatar(avatar);
-})
+//Функция подтверждения удаления
+const deleteConfirm = new PopupWithSubmit (popupDelete, 
+  (card) => {
+  api.deleteCards(card._id)
+    .then(() => {
+      card.deletePhoto();
+      deleteConfirm.close();
+    })
+  }, keyClose)
 
+function loading(Loading) {
+  if (Loading) {
+    Array.from(saveButton).forEach((submit) => {
+      submit.classList.add('popup__button-save_active')
+      submit.textContent = "Сохранение...";
+    })
+  } else {
+    Array.from(saveButton).forEach((submit) => {
+      submit.classList.remove('popup__button-save_active')
+      submit.textContent = "Сохранить";
+    })
+  }
+}
 
 //Функция создания карточки
-const createCard = (name, link, id, likes) => {
-  const card = new Card (name, link, id, likes, '.photo-template', () => {
-      photoCardPopup.open({name: name, link: link});
+const createCard = (data, UserId, cardList) => {
+  const card = new Card (data, '.photo-template', api, () => {
+    photoCardPopup.open(data);
   }, () => {
   deleteConfirm.open(card);
-});
-
+}, UserId);
+  // card.likePhoto(data);
   const photo = card.generateCard();
-  return photo;
+  cardList.addItem(photo)
 };
 
-let cardsArray = [];
-let cardList = null;
-
-//Получаем карточки
-api.getInitialCards()
-.then((res) => {
-  cardsArray = res.map((item) => {
-      return item;
-  })
-  return cardsArray
-})
-
 //Функция добавления карточек на страницу
-.then(() => {
-cardList = new Section ({
-  items: cardsArray,
+const cardList = new Section ({
   renderer: (item) => {
-      const name = item.name;
-      const link = item.link;
-      const id = item._id;
-      const likes = item.likes.length
-      cardList.addItem(createCard(name, link, id, likes))
+      createCard(item, UserId, cardList)
   }
 }, photoList);
-
-cardList.render();
-
-})
 
 //Добавление НОВОЙ карточки на страницу
 const addCardPopup = new PopupWithForm ({
   popupElement: popupNew,
   submitCallback: (item) => {
+    loading(true);
     const name = item.TitleProfile;
     const link = item.PhotoProfile;
 
-    api.pushCards({name, link});
-    cardList.addItem(createCard(name ,link)); // менять 
-
-    addCardPopup.close();
+    api.pushCards({name, link})
+      .then((data) => {
+      createCard(data, UserId, cardList);
+      addCardPopup.close();
+    })
+    .finally(() => {
+      loading(false);
+  })
   }
 }, keyClose);
 
@@ -121,13 +119,20 @@ const addCardPopup = new PopupWithForm ({
 const editProfilePopup = new PopupWithForm ({
   popupElement: popupEdit,
   submitCallback: (data) => {
+    loading(true);
     const name = data.nameProfile;
     const job = data.jobProfile;
 
       api.pushUserInfo({name, job})
-      user.setUserInfo(name, job); // менять 
-      
-      editProfilePopup.close();
+      .then((data) => {
+        const name = data.name
+        const job = data.about
+        user.setUserInfo(name, job);
+        editProfilePopup.close();
+      })
+      .finally(() => {
+        loading(false);
+    })
   }
 }, keyClose);
 
@@ -135,24 +140,19 @@ const editProfilePopup = new PopupWithForm ({
 const editAvatarPopup = new PopupWithForm ({
   popupElement: popupAvatar,
   submitCallback: (data) => {
+    loading(true);
     const avatar = data.AvatarProfile;
 
-    api.pushUserAvatar({avatar});
-    user.setUserAvatar(avatar);
-      
+    api.pushUserAvatar({avatar})
+      .then((data) => {
+      user.setUserAvatar(data.avatar);
       editAvatarPopup.close();
+    })
+    .finally(() => {
+      loading(false);
+  })
   } 
 }, keyClose);
-
-//Функция подтверждения удаления
-const deleteConfirm = new PopupWithSubmit (popupDelete, 
-  (card) => {
-  const id = card._id
-
-  api.deleteCards(id)
-  card.deletePhoto();// менять 
-  deleteConfirm.close();
-  }, keyClose)
 
 //Открытие и сбрасывание валидации AVATAR
 buttonAvatar.addEventListener('click', () => {
@@ -181,3 +181,15 @@ addCardPopup.setEventListeners();
 photoCardPopup.setEventListeners();
 editProfilePopup.setEventListeners();
 deleteConfirm.setEventListeners();
+
+Promise.all([api.getInitialCards(), api.getUserInfo()])
+    .then(([cards, userData]) => {
+        const name = userData.name
+        const job = userData.about
+        const avatar = userData.avatar
+        user.setUserInfo(name, job);
+        user.setUserAvatar(avatar);
+        UserId = userData._id;
+
+        cardList.render(cards);
+    })

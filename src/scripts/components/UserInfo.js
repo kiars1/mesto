@@ -18,7 +18,6 @@ export class UserInfo {
   setUserInfo(name, job) {
     this._name.textContent = name;
     this._info.textContent = job;
-    
   }
 
   setUserAvatar(avatar) {
