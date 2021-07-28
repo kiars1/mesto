@@ -172,13 +172,13 @@ const deleteConfirm = new PopupWithSubmit (popupDelete,
     })
   }, keyClose)
 
-//Открытие и сбрасывание валидации AVATAR
+//Открытие и сбрасывание валидации попапа Обновления Аватара
 buttonAvatar.addEventListener('click', () => {
   editAvatarPopup.open();
   avatarFormValidator.refreshInputValidity();
 });
 
-//Открытие/заполнение и сбрасывание валидации Edit Popup
+//Открытие/заполнение и сбрасывание валидации попапа Редактирования профиля
 buttonEdit.addEventListener('click', () => {
   editProfilePopup.open()
   nameInput.value = user.getUserInfo().name;
@@ -186,7 +186,7 @@ buttonEdit.addEventListener('click', () => {
   editFormValidator.refreshInputValidity();
 });
 
-//Открытие и сбрасывание валидации New Popup
+//Открытие и сбрасывание валидации попапа Создания карточки
 buttonAdd.addEventListener('click', () => {
   buttonSaveNew.textContent = "Создать"; // да это костылёк
   addCardPopup.open();
