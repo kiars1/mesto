@@ -105,6 +105,7 @@ const editAvatarPopup = new PopupWithForm ({
       editAvatarPopup.close();
       })
       .catch(() => {
+        editAvatarPopup.close();
         alert('Невозможно обновить аватар пользователя.'); //Потому что ошубку надо видеть. Да я понимаю что лучше чтобы это был отдельный popup
       })
       .finally(() => {
@@ -129,6 +130,7 @@ const editProfilePopup = new PopupWithForm ({
       editProfilePopup.close();
     })
     .catch(() => {
+      editProfilePopup.close();
       alert('Невозможно обновить данные пользователя.') //Потому что ошубку надо видеть. Да я понимаю что лучше чтобы это был отдельный popup
     })
     .finally(() => {
@@ -151,6 +153,7 @@ const addCardPopup = new PopupWithForm ({
         addCardPopup.close();
       })
       .catch(() => {
+        addCardPopup.close();
         alert('Невозможно добавить новую карточку.');  //Потому что ошубку надо видеть. Да я понимаю что лучше чтобы это был отдельный popup
       })
   }
