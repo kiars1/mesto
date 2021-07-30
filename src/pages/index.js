@@ -157,7 +157,7 @@ const deleteConfirm = new PopupWithSubmit (popupDelete,
       alert('Невозможно удалить карточку.'); //Потому что ошубку надо видеть
     })
     .finally(() => {
-      addCardPopup.renderLoading(false, `Да`);
+      deleteConfirm.renderLoading(false, `Да`);
     })
   }, keyClose)
 
