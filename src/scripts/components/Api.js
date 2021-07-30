@@ -4,7 +4,7 @@ export class Api {
   this._headers = headers;
   }
 
-  _then(res) {
+  _checkResponse(res) {
     if (res.ok) { 
       return res.json();
     } return Promise.reject(`Ошибка: ${res.status}`);
@@ -16,10 +16,7 @@ export class Api {
       method: 'GET',
       headers: this._headers
     })
-      .then((res) =>  this._then(res))
-      .catch(() => {
-        console.log('Не работает')
-      })
+      .then((res) =>  this._checkResponse(res))
   }
 
   //Отправляем имя и хобби
@@ -32,10 +29,7 @@ export class Api {
               about: item.job
             })
           })
-      .then((res) =>  this._then(res))
-      .catch(() => {
-        console.log('Не работает')
-      })
+      .then((res) =>  this._checkResponse(res))
   }
 
   //Отправляем Аватар
@@ -45,10 +39,7 @@ export class Api {
       headers: this._headers,
       body: JSON.stringify(link)
       })
-  .then((res) =>  this._then(res))
-  .catch(() => {
-    console.log('Не работает')
-  })
+  .then((res) =>  this._checkResponse(res))
 }
 
   //Получаем карточки с сервака
@@ -57,10 +48,7 @@ export class Api {
       method: 'GET',
       headers: this._headers
     })
-      .then((res) =>  this._then(res))
-      .catch(() => {
-        console.log('Не работает')
-      })
+      .then((res) =>  this._checkResponse(res))
   }
 
   //Отправляем карточку
@@ -73,10 +61,7 @@ export class Api {
           link: item.link
         })
         })
-    .then((res) =>  this._then(res))
-    .catch(() => {
-      console.log('Не работает')
-    })
+    .then((res) =>  this._checkResponse(res))
   }
 
   //Удаляем карточку
@@ -85,10 +70,7 @@ export class Api {
       method: 'DELETE',
       headers: this._headers,
       })
-  .then((res) =>  this._then(res))
-  .catch(() => {
-    console.log('Не работает')
-  })
+  .then((res) =>  this._checkResponse(res))
   }
 
   //Ставим лайк
@@ -97,10 +79,7 @@ export class Api {
       method: 'PUT',
       headers: this._headers,
       })
-  .then((res) =>  this._then(res))
-  .catch(() => {
-    console.log('Не работает')
-  })
+  .then((res) =>  this._checkResponse(res))
   }
 
   //Удаляем лайк
@@ -109,9 +88,6 @@ export class Api {
       method: 'DELETE',
       headers: this._headers,
       })
-  .then((res) =>  this._then(res))
-  .catch(() => {
-    console.log('Не работает')
-  })
+  .then((res) =>  this._checkResponse(res))
   }
 }

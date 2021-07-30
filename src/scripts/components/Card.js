@@ -29,6 +29,8 @@ export class Card {
     const cardImage = this._element.querySelector('.photo__image');
     const cardName = this._element.querySelector('.photo__title');
     const cardLike = this._element.querySelector('.photo__score');
+    this._likeButton = this._element.querySelector('.photo__like-button');
+    this._scoring = this._element.querySelector('.photo__score');
     
     cardName.textContent = this._name;
     cardImage.alt = this._name;
@@ -49,22 +51,26 @@ export class Card {
   
   //Ставим удаляем лайк
   _handleLikeClick() {
-    const likeButton = this._element.querySelector('.photo__like-button');
-    const score = this._element.querySelector('.photo__score');
 
-    if (!likeButton.classList.contains('photo__like-button_active')) {
+    if (!this._likeButton.classList.contains('photo__like-button_active')) {
       this._api
         .putLike(this._id)
         .then((data) => {
-          likeButton.classList.add('photo__like-button_active');
-          score.textContent = `${data.likes.length}`;
+          this._likeButton.classList.add('photo__like-button_active');
+          this._scoring.textContent = `${data.likes.length}`;
+        })
+        .catch((err) => {
+          console.log(err)
         })
     } else {
       this._api
         .deleteLike(this._id)
         .then((data) => {
-          likeButton.classList.remove('photo__like-button_active');
-          score.textContent = `${data.likes.length}`;
+          this._likeButton.classList.remove('photo__like-button_active');
+          this._scoring.textContent = `${data.likes.length}`;
+        })
+        .catch((err) => {
+          console.log(err)
         })
     }
   }

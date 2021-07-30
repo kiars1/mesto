@@ -1,11 +1,11 @@
-import { Api } from '../components/Api.js';
-import { Card } from '../components/Card.js';
-import { PopupWithForm } from '../components/PopupWithForm.js';
-import { PopupWithImage } from '../components/PopupWithImage.js';
-import { PopupWithSubmit } from "../components/PopupWithSubmit.js";
-import { Section } from '../components/Section.js';
-import { UserInfo } from '../components/UserInfo.js';
-import { FormValidator } from "../components/FormValidator.js";
+import { Api } from '../scripts/components/Api.js';
+import { Card } from '../scripts/components/Card.js';
+import { PopupWithForm } from '../scripts/components/PopupWithForm.js';
+import { PopupWithImage } from '../scripts/components/PopupWithImage.js';
+import { PopupWithSubmit } from "../scripts/components/PopupWithSubmit.js";
+import { Section } from '../scripts/components/Section.js';
+import { UserInfo } from '../scripts/components/UserInfo.js';
+import { FormValidator } from "../scripts/components/FormValidator.js";
 
 import { 
   profileImage,
@@ -21,18 +21,15 @@ import {
   formElementAvatar,
   formElementEdit,
   formElementNew,
-  buttonSaveNew,
-  buttonSaveDel,
   popupImage,
   nameInput,
   jobInput,
   photoList,
   validationConfig,
-  saveButton,
   keyClose
-} from "../utils/constants.js";
+} from "../scripts/utils/constants.js";
 
-import "../../pages/index.css";
+import "./index.css";
 
 const api = new Api({
   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-26/',
@@ -58,27 +55,11 @@ cardFormValidator.enableValidation();
 //но сейчас он такой какой он есть.
 let UserId = null;
 
-//Функция отображения загрузки
-function loading(loading) {
-  if (loading) {
-    Array.from(saveButton).forEach((submit) => {
-      submit.classList.add('popup__button-save_active') //Просто css с простой анимацией. Люблю я это дело.
-      submit.textContent = "Сохранение...";
-    })
-  } else {
-    Array.from(saveButton).forEach((submit) => {
-      submit.classList.remove('popup__button-save_active')
-      submit.textContent = "Сохранить";
-    })
-  }
-}
-
 //Функция создания карточки
 const createCard = (data, UserId, cardList) => {
   const card = new Card (data, '.photo-template', api, () => {
     photoCardPopup.open(data);
   }, () => {
-  buttonSaveDel.textContent = "Да"; //Да это костыль
   deleteConfirm.open(card);
 }, UserId);
   const photo = card.generateCard();
@@ -96,7 +77,7 @@ const cardList = new Section ({
 const editAvatarPopup = new PopupWithForm ({
   popupElement: popupAvatar,
   submitCallback: (data) => {
-    loading(true);
+    editAvatarPopup.renderLoading(true, `Сохранение...`);
     const avatar = data.AvatarProfile;
 
     api.pushUserAvatar({avatar})
@@ -105,11 +86,10 @@ const editAvatarPopup = new PopupWithForm ({
       editAvatarPopup.close();
       })
       .catch(() => {
-        editAvatarPopup.close();
         alert('Невозможно обновить аватар пользователя.'); //Потому что ошубку надо видеть. Да я понимаю что лучше чтобы это был отдельный popup
       })
       .finally(() => {
-        loading(false);
+        editAvatarPopup.renderLoading(false, `Сохранить`);
   })
   } 
 }, keyClose);
@@ -118,7 +98,7 @@ const editAvatarPopup = new PopupWithForm ({
 const editProfilePopup = new PopupWithForm ({
   popupElement: popupEdit,
   submitCallback: (data) => {
-    loading(true);
+    editProfilePopup.renderLoading(true, `Сохранение...`);
     const name = data.nameProfile;
     const job = data.jobProfile;
 
@@ -130,11 +110,10 @@ const editProfilePopup = new PopupWithForm ({
       editProfilePopup.close();
     })
     .catch(() => {
-      editProfilePopup.close();
       alert('Невозможно обновить данные пользователя.') //Потому что ошубку надо видеть. Да я понимаю что лучше чтобы это был отдельный popup
     })
     .finally(() => {
-      loading(false);
+      editProfilePopup.renderLoading(false, `Сохранить`);
     })
   }
 }, keyClose);
@@ -143,7 +122,7 @@ const editProfilePopup = new PopupWithForm ({
 const addCardPopup = new PopupWithForm ({
   popupElement: popupNew,
   submitCallback: (item) => {
-    loading(true);
+    addCardPopup.renderLoading(true, `Сохранение...`);
     const name = item.TitleProfile;
     const link = item.PhotoProfile;
 
@@ -153,8 +132,10 @@ const addCardPopup = new PopupWithForm ({
         addCardPopup.close();
       })
       .catch(() => {
-        addCardPopup.close();
         alert('Невозможно добавить новую карточку.');  //Потому что ошубку надо видеть. Да я понимаю что лучше чтобы это был отдельный popup
+      })
+      .finally(() => {
+        addCardPopup.renderLoading(false, `Создать`);
       })
   }
 }, keyClose);
@@ -162,7 +143,7 @@ const addCardPopup = new PopupWithForm ({
 //Функция подтверждения удаления
 const deleteConfirm = new PopupWithSubmit (popupDelete, 
   (card) => {
-  loading(true);
+  deleteConfirm.renderLoading(true, `Сохранение...`);
   const id = card._id
   
   api.deleteCards(id)
@@ -174,6 +155,9 @@ const deleteConfirm = new PopupWithSubmit (popupDelete,
     })
     .catch(() => {
       alert('Невозможно удалить карточку.'); //Потому что ошубку надо видеть
+    })
+    .finally(() => {
+      addCardPopup.renderLoading(false, `Да`);
     })
   }, keyClose)
 
@@ -193,10 +177,10 @@ buttonEdit.addEventListener('click', () => {
 
 //Открытие и сбрасывание валидации попапа Создания карточки
 buttonAdd.addEventListener('click', () => {
-  buttonSaveNew.textContent = "Создать"; // да это костылёк
   addCardPopup.open();
   cardFormValidator.refreshInputValidity();
 });
+
 
 //Включение слушателей попапов
 editAvatarPopup.setEventListeners();
@@ -218,4 +202,7 @@ Promise.all([api.getInitialCards(), api.getUserInfo()])
     UserId = userData._id; //А это уже позрослевший друг.
 
     cardList.render(cards);
+  })
+  .catch((err) => {
+    console.log(err);
   })

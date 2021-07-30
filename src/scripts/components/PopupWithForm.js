@@ -2,16 +2,15 @@ import { Popup } from "./Popup.js";
 
 export class PopupWithForm extends Popup {
   constructor ({popupElement, submitCallback}, keyClose) {
-    super(popupElement);
-    this._keyClose = keyClose;
+    super(popupElement, keyClose);
 
     this._submitCallback = submitCallback;
-    this._formElement = popupElement.querySelector('.popup__form')
+    this._formElement = popupElement.querySelector('.popup__form');
+    this._inputList = this._formElement.querySelectorAll('.popup__input');
   }
   
   //Кушаем значения в инпутах
   _getInputValues() {
-    this._inputList = this._formElement.querySelectorAll('.popup__input')
       this.inputValue = {}
 
       this._inputList.forEach(inputElement => {

@@ -2,10 +2,9 @@ import { Popup } from "./Popup.js";
 
 export class PopupWithSubmit extends Popup {
   constructor (popupElement, submitHandler, keyClose) {
-    super(popupElement);
+    super(popupElement, keyClose);
 
     this._submitHandler = submitHandler;
-    this._keyClose = keyClose;
   }
 
   setEventListeners() {
@@ -13,7 +12,6 @@ export class PopupWithSubmit extends Popup {
     this._popupElement.addEventListener('submit', (evt) => {
       evt.preventDefault();
       this._submitHandler(this._card);
-      this.close();
     })
   } 
 

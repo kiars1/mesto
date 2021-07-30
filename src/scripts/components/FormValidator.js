@@ -65,7 +65,7 @@ export class FormValidator {
 
   //Сбрасываем Валидацию  
   refreshInputValidity() {
-    this._toggleButtonState(this._inputList, this._buttonElement);
+    this._toggleButtonState();
 
     this._inputList.forEach((inputElement) => {
       this._removeInputError(inputElement)
