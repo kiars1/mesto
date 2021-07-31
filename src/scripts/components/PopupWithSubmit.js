@@ -5,6 +5,7 @@ export class PopupWithSubmit extends Popup {
     super(popupElement, keyClose);
 
     this._submitHandler = submitHandler;
+    this._saveButton = this._popupElement.querySelector('.popup__button-save');
   }
 
   setEventListeners() {
@@ -13,7 +14,18 @@ export class PopupWithSubmit extends Popup {
       evt.preventDefault();
       this._submitHandler(this._card);
     })
-  } 
+  }
+  
+  //Функция отображения загрузки
+  renderLoading(loading, text) {
+    if (loading) {
+      this._saveButton.classList.add('popup__button-save_active') //Просто css с простой анимацией. Люблю я это дело.
+      this._saveButton.textContent = text;
+    } else {
+      this._saveButton.classList.remove('popup__button-save_active')
+      this._saveButton.textContent = text;
+    }
+  }
 
   open(card) {
     this._card = card;

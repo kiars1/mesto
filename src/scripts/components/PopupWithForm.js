@@ -7,6 +7,7 @@ export class PopupWithForm extends Popup {
     this._submitCallback = submitCallback;
     this._formElement = popupElement.querySelector('.popup__form');
     this._inputList = this._formElement.querySelectorAll('.popup__input');
+    this._saveButton = this._popupElement.querySelector('.popup__button-save');
   }
   
   //Кушаем значения в инпутах
@@ -28,6 +29,17 @@ export class PopupWithForm extends Popup {
 
       this._submitCallback(this._getInputValues())
     })
+  }
+
+  //Функция отображения загрузки
+  renderLoading(loading, text) {
+    if (loading) {
+      this._saveButton.classList.add('popup__button-save_active') //Просто css с простой анимацией. Люблю я это дело.
+      this._saveButton.textContent = text;
+    } else {
+      this._saveButton.classList.remove('popup__button-save_active')
+      this._saveButton.textContent = text;
+    }
   }
 
   //Закрытие popup со сбрасыванием формы.
